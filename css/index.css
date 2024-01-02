@@ -1,0 +1,31 @@
+@font-face {
+  font-family: 'Pretendard-Regular';
+  src: url('https://cdn.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+  font-weight: 400;
+  font-style: normal;
+}
+
+body { font-family: 'Pretendard-Regular'; background-color: rgb(245, 185, 196);}
+
+.intro-wrapper { display:flex; flex-direction: column; justify-content: center; color: white; padding: 50px 0; text-align: center; }
+.intro-title { font-size: 40px; margin-bottom: 25px; font-weight: bold; }
+.intro-text { font-size: 1.2rem; font-weight: 100; line-height: 30px; }
+
+.menu { margin-bottom: 20px; }
+.menu-title {text-align: center; font-size: 1.4rem; font-weight: bold; color: white; margin-bottom: 20px; }
+.menu-text {text-align: center; font-size: 1.2rem; color: white; margin-bottom: 20px; }
+
+.swiper { width: 80%; }
+.gallery-thumb { width: 100%; height: 20%; }
+
+.map-list { background-color: #f2eeee; width: 80%; display: flex; padding: 15px; }
+.map-list a { flex: 1 1 auto!important; text-align: center; text-decoration: none; color: black; border-right: 1px solid rgba(97,80,67,.15); font-size: 0.9rem;}
+.map-list a:last-child { border-right: 0; }
+
+.accordion-button:not(.collapsed) { background-color: unset; }
+.account { display: flex; justify-content: space-between; }
+.copy-account { border: 1px solid #e9ecef; border-radius: 5px; color: #999999;}
+
+.share { cursor: pointer; }
+
+footer { padding: 30px 0; }
