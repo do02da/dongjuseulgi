@@ -56,7 +56,7 @@ function setGallery() {
 }
 
 async function setGalleryImage() {
-  await fetch("/batch/fileList.json")
+  await fetch("./batch/fileList.json")
     .then((res) => res.json())
     .then((files) => {
       for (file of files) {
