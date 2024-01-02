@@ -64,7 +64,7 @@ async function setGalleryImage() {
         swiperSlide.classList.add("swiper-slide");
         
         const img = document.createElement('img');
-        img.src = "/img/gallery/" + file.name;
+        img.src = "./img/gallery/" + file.name;
 
         const thumbSlide = swiperSlide.cloneNode(true);
         const thumbImg = img.cloneNode(true);
