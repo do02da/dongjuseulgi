@@ -1,4 +1,6 @@
 window.addEventListener('DOMContentLoaded', () => {
+  const autoplayVideoInterval = setInterval("autoplayVideo()", 200);
+
   init();
   setEvents();
 });
@@ -10,8 +12,25 @@ function init() {
   Kakao.init('760340e7105c321e7ff96d5fdcb5e524');
 }
 
+function autoplayVideo() {
+  const promise = document.getElementById('bgm').play();
+  if (promise !== undefined) {
+    promise.then(function () {
+      clearInterval(autoplayVideoInterval);
+    }).catch(function (error) {});
+  }
+}
+
 function setGallery() { 
   setGalleryImage().then(() => {
+    const thumbSwiper = new Swiper('.gallery-thumb', {
+      loop: true,
+      spaceBetween: 10,
+      slidesPerView: 4,
+      freeMode: true,
+      watchSlidesProgress: true,
+    });
+
     const mainSwiper = new Swiper('.gallery-main', {
       speed: 1250,
       spaceBetween: 30,
@@ -28,27 +47,9 @@ function setGallery() {
         delay: 3000,
         disableOnInteraction: false,
       },
-    });
-
-    const thumbSwiper = ('.gallery-thumb', {
-      speed: 1250,
-      spaceBetween: 30,
-      centeredSlides: true,
-      loop: true,
-
-    
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-
-      autoplay: {
-        delay: 3000,
-        disableOnInteraction: false,
-      },
 
       thumbs: {
-        swiper: mainSwiper
+        swiper: thumbSwiper
       }
     });
   });
@@ -64,12 +65,17 @@ async function setGalleryImage() {
         
         const img = document.createElement('img');
         img.src = "/img/gallery/" + file.name;
+
+        const thumbSlide = swiperSlide.cloneNode(true);
+        const thumbImg = img.cloneNode(true);
         img.classList.add("img-fluid");
+        thumbImg.classList.add("img-thumbnail")
 
         swiperSlide.appendChild(img);
+        thumbSlide.appendChild(thumbImg);
 
         document.getElementById("gallery-images").appendChild(swiperSlide);
-        document.getElementById("gallery-thumb").appendChild(swiperSlide);
+        document.getElementById("gallery-thumb").appendChild(thumbSlide);
       }
     });
 }
@@ -91,6 +97,22 @@ function setMap() {
 }
 
 function setEvents() {
+  const audioButton = document.getElementById("audio-button");
+  audioButton.addEventListener("click", (e) => {
+    const bgm = document.getElementById("bgm")
+
+    const audioIcon = audioButton.querySelector("i");
+    if (audioIcon.classList.contains("bi-volume-up")) {
+      audioIcon.classList.remove("bi-volume-up");
+      audioIcon.classList.add("bi-volume-mute");
+      bgm.muted = true;
+    } else {
+      audioIcon.classList.remove("bi-volume-mute");
+      audioIcon.classList.add("bi-volume-up");      
+      bgm.muted = false;
+    }
+  });
+
   // 계좌 번호 복사
   document.getElementById("account-wrapper").addEventListener("click", (e) => {
     const target= e.target;
