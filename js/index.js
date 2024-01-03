@@ -45,10 +45,27 @@ async function setGalleryImage() {
             img.style.aspectRatio = "16 / 10";
           }
           img.style.gridArea = gridAreaCss;
-      });
+        });
 
         document.getElementById("gallery").appendChild(img);
       }
+
+      const options = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.5
+      }; 
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("fadeIn");
+          }
+        });
+      }, options);
+      
+      const imageList = document.querySelectorAll(".gallery-grid img");
+      imageList.forEach((el) => observer.observe(el));
     });
 }
 
@@ -69,6 +86,23 @@ function setMap() {
 }
 
 function setEvents() {
+  const options = {
+    root: null,
+    rootMargin: "0px",
+    threshold: 0.5
+  }; 
+  
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add("slide");
+      }
+    });
+  }, options);
+  
+  const slideInList = document.querySelectorAll(".slideIn");
+  slideInList.forEach((el) => observer.observe(el));
+
   const audioButton = document.getElementById("audio-button");
   // BGM 음소거 On/Off 버튼
   audioButton.addEventListener("click", (e) => {
