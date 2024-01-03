@@ -1,3 +1,6 @@
+const galleryImages = [];
+let isCanCarouselMove = true;
+
 window.addEventListener('DOMContentLoaded', () => {
   const autoplayVideoInterval = setInterval("autoplayVideo()", 200);
 
@@ -6,7 +9,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function init() {
-  setGallery();
+  setGalleryImage();
   setMap();
 
   Kakao.init('760340e7105c321e7ff96d5fdcb5e524');
@@ -21,61 +24,30 @@ function autoplayVideo() {
   }
 }
 
-function setGallery() { 
-  setGalleryImage().then(() => {
-    const thumbSwiper = new Swiper('.gallery-thumb', {
-      loop: true,
-      spaceBetween: 10,
-      slidesPerView: 4,
-      freeMode: true,
-      watchSlidesProgress: true,
-    });
-
-    const mainSwiper = new Swiper('.gallery-main', {
-      speed: 1250,
-      spaceBetween: 30,
-      centeredSlides: true,
-      loop: true,
-      autoHeight: true,
-    
-      navigation: {
-        nextEl: '.swiper-button-next',
-        prevEl: '.swiper-button-prev',
-      },
-
-      autoplay: {
-        delay: 3000,
-        disableOnInteraction: false,
-      },
-
-      thumbs: {
-        swiper: thumbSwiper
-      }
-    });
-  });
-}
-
 async function setGalleryImage() {
   await fetch("./batch/fileList.json")
     .then((res) => res.json())
     .then((files) => {
       for (file of files) {
-        const swiperSlide = document.createElement('div');
-        swiperSlide.classList.add("swiper-slide");
-        
-        const img = document.createElement('img');
+        const img = new Image();
         img.src = "./img/gallery/" + file.name;
+        img.dataset.index = galleryImages.length;
 
-        const thumbSlide = swiperSlide.cloneNode(true);
-        const thumbImg = img.cloneNode(true);
-        img.classList.add("img-fluid");
-        thumbImg.classList.add("img-thumbnail")
+        galleryImages.push(file.name);
 
-        swiperSlide.appendChild(img);
-        thumbSlide.appendChild(thumbImg);
+        img.addEventListener('load', function() {
+          let gridAreaCss = "span ";
+          if (this.naturalHeight > this.naturalWidth) { // 세로로 길 때
+            gridAreaCss += "2";
+            img.style.aspectRatio = "16 / 20";
+          } else {  // 가로로 길 떄
+            gridAreaCss += "1";
+            img.style.aspectRatio = "16 / 10";
+          }
+          img.style.gridArea = gridAreaCss;
+      });
 
-        document.getElementById("gallery-images").appendChild(swiperSlide);
-        document.getElementById("gallery-thumb").appendChild(thumbSlide);
+        document.getElementById("gallery").appendChild(img);
       }
     });
 }
@@ -98,6 +70,7 @@ function setMap() {
 
 function setEvents() {
   const audioButton = document.getElementById("audio-button");
+  // BGM 음소거 On/Off 버튼
   audioButton.addEventListener("click", (e) => {
     const bgm = document.getElementById("bgm")
 
@@ -113,9 +86,14 @@ function setEvents() {
     }
   });
 
+  // 갤러리 이미지 클릭 이벤트
+  document.getElementById("gallery").addEventListener("click", (e) => {
+    if (e.target.nodeName.toUpperCase() === "IMG") openGalleryModal(e.target.dataset.index);
+  });
+
   // 계좌 번호 복사
   document.getElementById("account-wrapper").addEventListener("click", (e) => {
-    const target= e.target;
+    const target = e.target;
     if (target.classList.contains("copy-account")) {
       const accountNumber = target.parentNode.getElementsByClassName("account-number")[0].innerText;
 
@@ -151,5 +129,69 @@ function setEvents() {
     window.navigator.clipboard.writeText(window.location.href);
     alert("주소가 복사되었습니다.");
   });
+
+  // 갤러리 모달 닫기
+  document.querySelector(".carousel-modal-close").addEventListener("click", () => {
+    document.querySelector(".carousel-modal").classList.remove("show");
+    document.body.classList.remove("carousel-modal-open");
+
+    document.querySelector(".carousel-inner").textContent = "";
+  });
+
+  document.querySelector(".carousel-control-prev").addEventListener("click", () => appendImageBeforeMove("prev"));
+  document.querySelector(".carousel-control-next").addEventListener("click", () => appendImageBeforeMove("next"));
+  document.querySelector('#gallery-carousel').addEventListener('slid.bs.carousel', event => {
+    document.querySelector(".carousel-item:not(.active)").remove();
+    isCanCarouselMove = true;
+  })
 }
 
+function openGalleryModal(index) {
+  document.querySelector(".carousel-modal").classList.add("show");
+  document.body.classList.add("carousel-modal-open");
+
+  const carouselItem = document.createElement("div");
+  carouselItem.classList = "carousel-item active";
+
+  const carouselImg = document.createElement("img");
+  carouselImg.classList = "carousel-img";
+  carouselImg.src = "./img/gallery_raw/raw_" + galleryImages[index];
+  carouselImg.dataset.imgIndex = index;
+  carouselItem.appendChild(carouselImg);
+
+  document.querySelector(".carousel-inner").appendChild(carouselItem);
+}
+
+function appendImageBeforeMove(direction) {
+  if (isCanCarouselMove) {
+    isCanCarouselMove = false;
+
+    let index = Number(document.querySelector(".carousel-item.active img").dataset.imgIndex);
+    if (direction === "prev") {
+      if (index === 0) index = galleryImages.length - 1;
+      else index -= 1;
+    } else if (direction === "next") {
+      if (index === galleryImages.length - 1) index = 0;
+      else index += 1;
+    }
+  
+    const carouselItem = document.createElement("div");
+    carouselItem.classList = "carousel-item";
+  
+    const carouselImg = document.createElement("img");
+    carouselImg.classList = "carousel-img";
+    carouselImg.src = "./img/gallery/" + galleryImages[index];
+    carouselImg.dataset.imgIndex = index;
+    carouselItem.appendChild(carouselImg);
+  
+    const bsCarousel = new bootstrap.Carousel(document.querySelector('#gallery-carousel'))
+    const activeCarouselItem = document.querySelector(".carousel-item.active");
+    if (direction === "prev") {
+      document.querySelector(".carousel-inner").insertBefore(carouselItem, activeCarouselItem);
+      bsCarousel.prev();
+    } else if (direction === "next") {
+      document.querySelector(".carousel-inner").appendChild(carouselItem);
+      bsCarousel.next();
+    }
+  }
+}

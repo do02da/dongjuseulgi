@@ -11,21 +11,32 @@ body { font-family: 'Pretendard-Regular'; background-color: rgb(245, 185, 196);}
 .intro-title { font-size: 1.3rem; margin-bottom: 25px; font-weight: bold; }
 .intro-text { font-size: 1.0rem; font-weight: 100; line-height: 30px; }
 
-.menu { margin-bottom: 20px; }
+.menu { max-width: 85%; margin: auto; margin-bottom: 20px; }
 .menu-title {text-align: center; font-size: 1.4rem; font-weight: bold; color: white; margin-bottom: 20px; }
-.menu-text {text-align: center; font-size: 1.2rem; color: white; margin-bottom: 20px; }
+.menu-text {text-align: center; font-size: 1.0rem; font-weight: 100; line-height: 30px; color: white; margin-bottom: 20px; }
 
-.swiper { width: 80%; }
-.gallery-thumb { width: 100%; height: 20%; }
+.gallery-grid { display: grid; grid-auto-flow: dense; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(11, auto); max-width: 100%;}
+.gallery-grid img { max-width: 100%; border-radius: 10px; margin: auto; border: 4px solid rgba(0, 0, 0, 0); }
 
-.map-list { background-color: #f2eeee; width: 80%; display: flex; padding: 15px; }
-.map-list a { flex: 1 1 auto!important; text-align: center; text-decoration: none; color: black; border-right: 1px solid rgba(97,80,67,.15); font-size: 0.9rem;}
+.map-list { background-color: #f2eeee; width: 100%; display: grid; grid-template-columns: 1fr 1fr 0.7fr; padding: 15px 5px; }
+.map-list a { text-align: center; text-decoration: none; color: black; border-right: 1px solid rgba(97,80,67,.15); font-size: 0.9rem;}
 .map-list a:last-child { border-right: 0; }
 
+.accordion-button { background-color: #F2EEEE !important; }
 .accordion-button:not(.collapsed) { background-color: unset; }
+.accordion-body { font-size: 1.0rem; font-weight: 100; }
 .account { display: flex; justify-content: space-between; }
 .copy-account { border: 1px solid #e9ecef; border-radius: 5px; color: #999999;}
 
 .share { cursor: pointer; }
 
-footer { padding: 30px 0; }
+footer { padding: 50px; }
+.copyright { color: rgba(100, 100, 100, 0.5); font-size: 0.8rem; }
+
+.carousel-modal-open { overflow: hidden ;}
+.carousel-modal { display: none; position: fixed; top: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); }
+.carousel-modal-close { position: absolute; top: 10px; right: 10px; z-index: 2; }
+.carousel-modal.show { display: block; }
+.carousel-modal-wrapper { display: flex; align-items: center; margin: auto; height: 100%; }
+.carousel-modal-content { position: relative; width: 100%; display: flex; flex-direction: column; }
+.carousel-img { width: 100vw; height: 100vh; object-fit: contain; object-position: center center; }
