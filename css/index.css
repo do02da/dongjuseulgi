@@ -24,11 +24,21 @@ body { font-family: 'Pretendard-Regular'; background-color: rgb(245, 185, 196);}
 .map-list a { text-align: center; text-decoration: none; color: black; border-right: 1px solid rgba(97,80,67,.15); font-size: 0.9rem;}
 .map-list a:last-child { border-right: 0; }
 
+.way-info { display: flex; flex-direction: column; padding: 10px 20px; }
+.way-info-left { padding: 0 10px 0 0;}
+.way-info-title { display:flex; color: white; line-height: 32px; }
+.way-icon { background-color: #F2EEEE; color: #999999; padding: 8px; border-radius: 50%; }
+.way-info-text { color: white; font-size: 0.9rem; }
+.way-subway { width: fit-content; padding: 2px 10px; border-radius: 20px; color: white; font-size: 0.9rem; text-align: center; margin-bottom: 5px;}
+.subway-line-1 { background-color: #0052A4; }
+.subway-line-4 { background-color: #00A5DE; }
+.subway-line-7 { background-color: #747F00; }
+
 .accordion-button { background-color: #F2EEEE !important; }
 .accordion-button:not(.collapsed) { background-color: unset; }
 .accordion-body { font-size: 1.0rem; font-weight: 100; }
 .account { display: flex; justify-content: space-between; }
-.copy-account { border: 1px solid #e9ecef; border-radius: 5px; color: #999999;}
+.copy-account { border: 1px solid #e9ecef; border-radius: 5px; color: #999999; }
 
 .share { cursor: pointer; }
 
