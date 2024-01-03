@@ -36,15 +36,13 @@ async function setGalleryImage() {
         galleryImages.push(file.name);
 
         img.addEventListener('load', function() {
-          let gridAreaCss = "span ";
-          if (this.naturalHeight > this.naturalWidth) { // 세로로 길 때
-            gridAreaCss += "2";
-            img.style.aspectRatio = "16 / 20";
-          } else {  // 가로로 길 떄
-            gridAreaCss += "1";
-            img.style.aspectRatio = "16 / 10";
+          if (this.naturalHeight > this.naturalWidth) {
+            // 세로 이미지
+            img.classList.add("grid-vertical");
+          } else {
+            // 가로 이미지
+            img.classList.add("grid-horizontal");
           }
-          img.style.gridArea = gridAreaCss;
         });
 
         document.getElementById("gallery").appendChild(img);

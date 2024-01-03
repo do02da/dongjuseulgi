@@ -16,7 +16,9 @@ body { font-family: 'Pretendard-Regular'; background-color: rgb(245, 185, 196);}
 .menu-text {text-align: center; font-size: 1.0rem; font-weight: 100; line-height: 30px; color: white; margin-bottom: 20px; }
 
 .gallery-grid { display: grid; grid-auto-flow: dense; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(11, auto); max-width: 100%;}
-.gallery-grid img { max-width: 100%; border-radius: 10px; margin: auto; border: 4px solid rgba(0, 0, 0, 0); opacity: 0; }
+.gallery-grid img { max-width: 100%; border-radius: 10px; margin: auto; border: 4px solid rgba(0, 0, 0, 0); opacity: 0; cursor: pointer; }
+.grid-vertical { aspect-ratio: 12 / 18; grid-area: span 2; }
+.grid-horizontal { aspect-ratio: 12 / 9; grid-area: span 1; }
 
 .map-list { background-color: #f2eeee; width: 100%; display: grid; grid-template-columns: 1fr 1fr 0.7fr; padding: 15px 5px; }
 .map-list a { text-align: center; text-decoration: none; color: black; border-right: 1px solid rgba(97,80,67,.15); font-size: 0.9rem;}
@@ -41,15 +43,19 @@ footer { padding: 50px; }
 .carousel-modal-content { position: relative; width: 100%; display: flex; flex-direction: column; }
 .carousel-img { width: 100vw; height: 100vh; object-fit: contain; object-position: center center; }
 
-.fadeIn { animation: fadeIn 3s both; }
+.fadeIn { animation: fadeIn 2s both; }
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
 .slideIn { left: -50px; opacity: 0; position: relative; }
-.slideIn.slide { animation: slideIn 3s both; }
+.slideIn.slide { animation: slideIn 2s both; }
 @keyframes slideIn {
   from { left: -50px; opacity: 0; }
   to { left: 0; opacity: 1; }
+}
+
+@media (min-width: 1024px) {
+ .map-list { grid-template-columns: repeat(3, 1fr); }
 }
