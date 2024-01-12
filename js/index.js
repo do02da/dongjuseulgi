@@ -5,7 +5,6 @@ window.addEventListener('DOMContentLoaded', () => {
   const autoplayVideoInterval = setInterval("autoplayVideo()", 200);
 
   init();
-  setEvents();
 });
 
 function init() {
@@ -13,6 +12,8 @@ function init() {
   setMap();
 
   Kakao.init('760340e7105c321e7ff96d5fdcb5e524');
+
+  setEvents();
 }
 
 function autoplayVideo() {
@@ -74,6 +75,11 @@ function setMap() {
     zoom: 14,
     mapDataControl: false,
     scaleControl: false,
+
+    draggable: !isMobile(),
+    scrollWheel: !isMobile(),
+    pinchZoom: false,
+    keyboardShortcuts: false,
   };
   
   const map = new naver.maps.Map('map', mapOptions);
@@ -123,6 +129,11 @@ function setEvents() {
     if (e.target.nodeName.toUpperCase() === "IMG") openGalleryModal(e.target.dataset.index);
   });
 
+  document.getElementById("gallery-more-picture").addEventListener("click", (e) => {
+    document.getElementById("gallery").classList.remove("preview");
+    e.target.remove();
+  });
+
   // 계좌 번호 복사
   document.getElementById("account-wrapper").addEventListener("click", (e) => {
     const target = e.target;
@@ -163,11 +174,9 @@ function setEvents() {
   });
 
   // 갤러리 모달 닫기
-  document.querySelector(".carousel-modal-close").addEventListener("click", () => {
-    document.querySelector(".carousel-modal").classList.remove("show");
-    document.body.classList.remove("carousel-modal-open");
-
-    document.querySelector(".carousel-inner").textContent = "";
+  document.querySelector(".carousel-modal-close").addEventListener("click", () => closeGalleryModal());
+  document.querySelector(".carousel-modal").addEventListener("click", (e) => {
+    if (e.target.nodeName === "DIV") closeGalleryModal();
   });
 
   document.querySelector(".carousel-control-prev").addEventListener("click", () => appendImageBeforeMove("prev"));
@@ -192,6 +201,13 @@ function openGalleryModal(index) {
   carouselItem.appendChild(carouselImg);
 
   document.querySelector(".carousel-inner").appendChild(carouselItem);
+}
+
+function closeGalleryModal() {
+  document.querySelector(".carousel-modal").classList.remove("show");
+  document.body.classList.remove("carousel-modal-open");
+
+  document.querySelector(".carousel-inner").textContent = "";
 }
 
 function appendImageBeforeMove(direction) {
@@ -226,4 +242,8 @@ function appendImageBeforeMove(direction) {
       bsCarousel.next();
     }
   }
+}
+
+function isMobile() {
+	return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
 }
