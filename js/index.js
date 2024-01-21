@@ -184,7 +184,18 @@ function setEvents() {
   document.querySelector('#gallery-carousel').addEventListener('slid.bs.carousel', event => {
     document.querySelector(".carousel-item:not(.active)").remove();
     isCanCarouselMove = true;
-  })
+  });
+  // 터치 이벤트
+  let startY = 0;
+  document.querySelector('#gallery-carousel').addEventListener('touchstart', event => {
+    startY = event.touches[0].pageY;
+  });
+  document.querySelector('#gallery-carousel').addEventListener('touchend', event => {
+    let endY = event.changedTouches[0].pageY;
+
+    console.log(startY);
+    console.log(endY)
+  });
 }
 
 function openGalleryModal(index) {
