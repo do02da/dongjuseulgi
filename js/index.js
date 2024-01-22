@@ -179,22 +179,24 @@ function setEvents() {
     if (e.target.nodeName === "DIV") closeGalleryModal();
   });
 
-  document.querySelector(".carousel-control-prev").addEventListener("click", () => appendImageBeforeMove("prev"));
-  document.querySelector(".carousel-control-next").addEventListener("click", () => appendImageBeforeMove("next"));
+  document.querySelector(".carousel-control-prev").addEventListener("click", () => moveCarousel("prev"));
+  document.querySelector(".carousel-control-next").addEventListener("click", () => moveCarousel("next"));
   document.querySelector('#gallery-carousel').addEventListener('slid.bs.carousel', event => {
     document.querySelector(".carousel-item:not(.active)").remove();
     isCanCarouselMove = true;
   });
   // 터치 이벤트
-  let startY = 0;
+  let startX = 0;
   document.querySelector('#gallery-carousel').addEventListener('touchstart', event => {
-    startY = event.touches[0].pageY;
+    if (event.target.classList.contains("carousel-img")) startX = event.touches[0].pageX;
   });
   document.querySelector('#gallery-carousel').addEventListener('touchend', event => {
-    let endY = event.changedTouches[0].pageY;
-
-    console.log(startY);
-    console.log(endY)
+    if (event.target.classList.contains("carousel-img")) {
+      let endX = event.changedTouches[0].pageX;
+      
+      if (startX < endX) moveCarousel("prev");
+      else moveCarousel("next");
+    }
   });
 }
 
@@ -221,7 +223,7 @@ function closeGalleryModal() {
   document.querySelector(".carousel-inner").textContent = "";
 }
 
-function appendImageBeforeMove(direction) {
+function moveCarousel(direction) {
   if (isCanCarouselMove) {
     isCanCarouselMove = false;
 
