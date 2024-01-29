@@ -209,7 +209,7 @@ function openGalleryModal(index) {
 
   const carouselImg = document.createElement("img");
   carouselImg.classList = "carousel-img";
-  carouselImg.src = "./img/gallery_raw/raw_" + galleryImages[index];
+  carouselImg.src = "./img/gallery/" + galleryImages[index];
   carouselImg.dataset.imgIndex = index;
   carouselItem.appendChild(carouselImg);
 
